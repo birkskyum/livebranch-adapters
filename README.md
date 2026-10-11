@@ -38,3 +38,16 @@ livebranch does that with `livebranch link --gh owner/repo@ref livebranch.json`.
 
 An adapter describes the project as it is on its main branch today. A commit from before its build
 changed may not run with it. A `livebranch.json` in the project does not have that problem.
+
+## License
+
+Licensed under either of
+
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE))
+- MIT license ([LICENSE-MIT](LICENSE-MIT))
+
+at your option.
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in
+this repository by you, as defined in the Apache-2.0 license, shall be dual licensed as above,
+without any additional terms or conditions.
