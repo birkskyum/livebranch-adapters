@@ -11,8 +11,10 @@ its adapter, field by field.
 ## Adding one
 
 Add `adapters/<name>.json`, where `<name>` is the `name` of the project's package.json. A scoped
-package goes in a directory, as `adapters/@scope/name.json`. Forks have the same package name, so
-they get the adapter too.
+package goes in a directory, as `adapters/@scope/name.json`. The file names the repository it is for
+in its `repository` field. A fork gets the adapter too, as long as its package.json still names the
+original repository. For a project that the adapter does not fit by itself, `adapter=<name>` in the
+link applies it anyway.
 
 To try a config before sending it here, put it in a link as `livebranch.json`. The command line of
 livebranch does that with `livebranch link --gh owner/repo@ref livebranch.json`.
@@ -22,6 +24,7 @@ livebranch does that with `livebranch link --gh owner/repo@ref livebranch.json`.
 | Field | Meaning |
 | --- | --- |
 | `about` | What the adapter does and why. Only people read it. |
+| `repository` | Required in an adapter. The GitHub repository it is for, as `owner/repo`. Package names are not unique across GitHub, so the adapter applies only to that repository and to projects whose package.json names it as their `repository`, which forks do. |
 | `entry` | The page to open, or the script to run. |
 | `template` | The page for an entry that is a script. `<!--entry-->` marks where the script goes. |
 | `setup` | Shell commands that run before the build. `node script.ts` runs the script in the browser, with `fs`, `path`, `glob` and `process` over the project's files. |
