@@ -1,5 +1,5 @@
 {
-    "about": "Builds maplibre-gl-js from src. Its generated sources are not in git, so three generators run first. The Unicode data and the stylesheet come from the npm release, because their generators cannot run in a browser. The files under dist stand in for the bundles, so that the example pages in test/examples run as they are. The worker is a module next to the source that looks for it.",
+    "about": "Builds maplibre-gl-js from src. Its generated sources are not in git, so three generators run first. The Unicode data comes from the npm release, which saves running its generator, unless the generator differs from the release's. The generator then runs too. The stylesheet comes from the npm release, because its generator cannot run in a browser. The files under dist stand in for the bundles, so that the example pages in test/examples run as they are. The worker is a module next to the source that looks for it.",
     "repository": "maplibre/maplibre-gl-js",
     "entry": "demo.ts",
     "setup": [
@@ -14,7 +14,8 @@
             ],
             "inputs": [
                 "build/generate-unicode-data.ts"
-            ]
+            ],
+            "command": "node build/generate-unicode-data.ts"
         },
         {
             "files": [

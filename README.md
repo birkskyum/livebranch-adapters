@@ -27,11 +27,11 @@ livebranch does that with `livebranch link --gh owner/repo@ref livebranch.json`.
 | `repository` | Required in an adapter. The GitHub repository it is for, as `owner/repo`. Package names are not unique across GitHub, so the adapter applies only to that repository and to projects whose package.json names it as their `repository`, which forks do. |
 | `entry` | The page to open, or the script to run. |
 | `template` | The page for an entry that is a script. `<!--entry-->` marks where the script goes. |
-| `setup` | Shell commands that run before the build. `node script.ts` runs the script in the browser, with `fs`, `path`, `glob` and `process` over the project's files. |
+| `setup` | Shell commands that run before the build. `node script.ts` runs the script in the browser, with `fs`, `path`, `glob` and `process` over the project's files, and `zlib`. |
 | `alias` | Bare import specifiers that point at a project file or a URL. |
 | `entries` | Modules that nothing imports statically but the page loads, such as worker scripts. |
 | `files` | Extra files, written when the project does not have them. |
-| `prebuilt` | Generated files to take from the project's published npm package, for generators that cannot run in a browser. Each has `files` and, as `inputs`, the generator's sources. A warning is reported when those differ from the release's. |
+| `prebuilt` | Generated files to take from the project's published npm package, which saves running their generator, or stands in for a generator that cannot run in a browser. Each has `files` and, as `inputs`, the generator's sources. When those differ from the release's, the generator's `command` runs after the setup commands. Without a `command`, or when it fails, the release's files are used and a warning is reported. |
 | `cdn` | `esm.sh` (the default) or `jsdelivr`, for imports of npm packages. |
 
 `template` and the values of `files` may be arrays of lines.
