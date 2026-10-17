@@ -31,7 +31,7 @@ livebranch does that with `livebranch link --gh owner/repo@ref livebranch.json`.
 | `alias` | Bare import specifiers that point at a project file or a URL. |
 | `entries` | Modules that nothing imports statically but the page loads, such as worker scripts. |
 | `files` | Extra files, written when the project does not have them. |
-| `prebuilt` | Generated files to take from the project's published npm package, which saves running their generator, or stands in for a generator that cannot run in a browser. Each has `files` and, as `inputs`, the generator's sources. When those differ from the release's, the generator's `command` runs after the setup commands. Without a `command`, or when it fails, the release's files are used and a warning is reported. |
+| `prebuilt` | Generated files to take from the project's published npm package, which saves running their generator, or stands in for a generator that cannot run in a browser. Each has `files` and, as `inputs`, the generator's sources. When those differ from the release's, the generator's `command` runs after the setup commands. Without a `command`, or when it fails, the release's files are used and a warning is reported. A project with none of the `inputs`, a version from before the generator, gets none of the files. |
 | `cdn` | `esm.sh` (the default) or `jsdelivr`, for imports of npm packages. |
 
 `template` and the values of `files` may be arrays of lines.

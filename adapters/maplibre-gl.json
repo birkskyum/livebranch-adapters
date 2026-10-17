@@ -1,5 +1,5 @@
 {
-    "about": "Builds maplibre-gl-js from src. Its generated sources are not in git, so three generators run first. The Unicode data comes from the npm release, which saves running its generator, unless the generator differs from the release's. The generator then runs too. The stylesheet comes from the npm release, because its generator cannot run in a browser. The files under dist stand in for the bundles, so that the example pages in test/examples run as they are. The worker is a module next to the source that looks for it.",
+    "about": "Builds maplibre-gl-js from src. Its generated sources are not in git, so three generators run first. The Unicode data comes from the npm release, which saves running its generator, unless the generator differs from the release's. The generator then runs too. The stylesheet comes from the npm release, because its generator cannot run in a browser. The files under dist stand in for the bundles, so that the example pages in test/examples run as they are. The worker is a module next to the source that looks for it. Versions before 6 start their worker as a classic script, which loads that module.",
     "repository": "maplibre/maplibre-gl-js",
     "entry": "demo.ts",
     "setup": [
@@ -53,6 +53,18 @@
             "    hash: true,",
             "});",
             "map.addControl(new maplibregl.NavigationControl());"
+        ],
+        "src/util/maplibre-gl-worker-classic.js": [
+            "// Starts the worker of maplibre-gl before version 6, which starts it as a classic script. Built",
+            "// from source, the worker is a module, which this loads. Messages that arrive before the module",
+            "// listens are kept and given to it.",
+            "const early = [];",
+            "const keep = event => early.push(event.data);",
+            "self.addEventListener('message', keep);",
+            "import('./maplibre-gl-worker.mjs').then(() => {",
+            "    self.removeEventListener('message', keep);",
+            "    for (const data of early) self.dispatchEvent(new MessageEvent('message', {data}));",
+            "});"
         ]
     },
     "template": [
@@ -67,6 +79,13 @@
         "</head>",
         "<body>",
         "<div id=\"map\"></div>",
+        "<script type=\"module\">",
+        "// maplibre-gl before version 6 starts its worker from a URL that its bundle sets. Here it starts",
+        "// through a classic script that loads the worker module.",
+        "import * as maplibre from 'maplibre-gl';",
+        "const lib = ((maplibre as any).getVersion ? maplibre : (maplibre as any).default) as any;",
+        "if (Number(String(lib?.getVersion?.()).split('.')[0]) < 6) lib.setWorkerUrl?.(new URL('./src/util/maplibre-gl-worker-classic.js', location.href).href);",
+        "</script>",
         "<!--entry-->",
         "</body>",
         "</html>"
