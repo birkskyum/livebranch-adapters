@@ -26,7 +26,7 @@ livebranch does that with `livebranch link --gh owner/repo@ref livebranch.json`.
 | `about` | What the adapter does and why. Only people read it. |
 | `repository` | Required in an adapter. The GitHub repository it is for, as `owner/repo`. Package names are not unique across GitHub, so the adapter applies only to that repository and to projects whose package.json names it as their `repository`, which forks do. |
 | `entry` | The page to open, or the script to run. |
-| `template` | The page for an entry that is a script. `<!--entry-->` marks where the script goes. A script in it can keep the views of a comparison the same through `window.livebranch.sync` (see below). |
+| `template` | The page for an entry that is a script. `<!--entry-->` marks where the script goes. |
 | `setup` | Shell commands that run before the build. `node script.ts` runs the script in the browser, with `fs`, `path`, `glob` and `process` over the project's files, and `zlib`. |
 | `alias` | Bare import specifiers that point at a project file or a URL. |
 | `entries` | Modules that nothing imports statically but the page loads, such as worker scripts. |
@@ -42,18 +42,3 @@ changed may not run with it. A `livebranch.json` in the project does not have th
 ## License
 
 MIT. See [LICENSE](LICENSE). A contribution to this repository is licensed the same way.
-
-## Keeping the views of a comparison the same
-
-In a comparison, each page has `window.livebranch.sync`. A script in an adapter's template uses it
-to keep a view the same on both sides, such as a map's camera, and the page's other scripts need
-not know.
-
-- `sync.follow(show)` says how the next thing on the page shows a view, and returns its number. The
-  first thing of one side follows the first of the other.
-- `sync.publish(number, view)` offers a view of that thing to the other side. Offer only the views
-  that input gives it, not the ones the page animates by itself, or the two sides fight over them.
-  A view that came from the other side is not sent back.
-
-The view is any value that can be posted between pages. `adapters/maplibre-gl.json` finds each map
-through its events and offers its camera.
